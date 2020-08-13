@@ -1,0 +1,91 @@
+------------ URL -----------
+https://books.agiliq.com/projects/django-orm-cookbook/en/latest/index.html
+https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+
+
+----------------------------
+
+users = User.objects.all().select_related('profile')  <-- Auth Model Extends
+
+-------------------- Django ORM -------------------
+https://books.agiliq.com/projects/django-orm-cookbook/en/latest/index.html
+
+obj = get_object_or_404(MyModel, pk=1)
+
+Book.objects.filter(title__startswith='M')
+
+queryset = User.objects.filter(
+        first_name__startswith='R'
+    ) | User.objects.filter(
+    last_name__startswith='D'
+)
+from django.db.models import Q
+qs = User.objects.filter(Q(first_name__startswith='R')|Q(last_name__startswith='D'))
+
+queryset_2 = User.objects.filter(
+    first_name__startswith='R'
+) & User.objects.filter(
+    last_name__startswith='D'
+)
+
+queryset_1 = User.objects.filter(
+    first_name__startswith='R',
+    last_name__startswith='D'
+)
+
+queryset_3 = User.objects.filter(
+    Q(first_name__startswith='R') &
+    Q(last_name__startswith='D')
+)
+
+[SELECT id, username, first_name, last_name, email FROM auth_user WHERE NOT id < 5;]
+queryset = User.objects.filter(~Q(id__lt=5))
+
+q1 = User.objects.filter(id__gte=5)
+q2 = User.objects.filter(id__lte=9)
+q1.union(q2)
+
+queryset = User.objects.filter(
+    first_name__startswith='R'
+).only("first_name", "last_name")
+
+
+
+-------------------- Django ORM -------------------
+
+------------------- Rest Framework ----------------
+@renderer_classes(...)
+@parser_classes(...)
+@authentication_classes(...)
+@throttle_classes(...)
+@permission_classes(...)
+
+from rest_framework.decorators import api_view
+@api_view()
+def hello_world(request):
+    return Response({"message": "Hello, world!"})
+
+
+from rest_framework.decorators import api_view
+from rest_framework.decorators import parser_classes
+from rest_framework.parsers import JSONParser
+@api_view(['POST'])
+@parser_classes([JSONParser])
+def example_view(request, format=None):
+    """
+    A view that can accept POST requests with JSON content.
+    """
+    return Response({'received data': request.data})
+
+
+from django.contrib.auth.models import User
+from myapp.serializers import UserSerializer
+from rest_framework import generics
+from rest_framework.permissions import IsAdminUser
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAdminUser]
+
+
+------------------- Rest Framework ----------------

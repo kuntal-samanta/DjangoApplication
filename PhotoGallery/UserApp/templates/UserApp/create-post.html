@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<title>Pre-Post Blog</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- BS CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<style>
+.header {
+    color: blue;
+    font-size: 27px;
+    padding: 10px;
+}
+.mycolor{
+  background: black;
+  color: blue;
+}
+
+.inputboxheading{
+  color: blue;
+}
+</style>
+</head>
+
+<body>
+<!-- <nav class="navbar navbar-light bg-light justify-content-between mycolor"> -->
+<nav class="navbar navbar-light justify-content-between mycolor">
+  <a class="navbar-brand">MyMind</a>
+  <div class="my-2 my-sm-0">
+      <a href="{% url 'home' %}">Home</a> &nbsp;&nbsp;
+      <a href="{% url 'logout' %}">Logout</a>
+  </div>
+</nav>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                <form class="form-horizontal" method="post" action="{% url 'createblog' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset>
+                        <legend class="text-center header">Create Your Post</legend>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                            <div class="col-md-8">
+                              <label class="inputboxheading">Choose Image For Post :</label> 
+                              <input id="imgfile" name="imgfile" type="file" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                            <div class="col-md-8">
+                              <label class="inputboxheading">Blog Heading : (* Not more than 250 Letters)</label>
+                              <textarea class="form-control" id="headername" name="headername" placeholder="Blog Heading . . . ." rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
+                            <div class="col-md-8">
+                              <label class="inputboxheading">Blog Content :</label>
+                              <textarea class="form-control" id="message" name="message" placeholder="Write your Blog content . . . . " rows="7"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-user bigicon"></i></span>
+                            <div class="col-md-8">
+                              <label class="inputboxheading">Choose Tag :</label> 
+                              <select name="tag_name">
+                                    {% for i in tag %}
+                                    <option value="{{i.tag}}">{{i.tag}}</option>
+                                    {% endfor %}
+                              </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BS Js -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+</html>
