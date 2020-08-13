@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+    <script
+  src="http://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+<form onsubmit="return false">
+    {% csrf_token %}
+    <input type="text" id="name1" name="name">
+    <input type="text" id="maill" name="maill">
+    <input type="text" id="pass" name="pass">
+    <button type="submit" id="new_user_form" onclick="subform()">Click</button>
+</form>
+
+<p id="cng">Hello</p>
+<p id="hd">Text will Hide</p>
+
+<script type="text/javascript">
+    function subform()
+    {
+    console.log("I am i fun **");
+
+    $.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            url: '/user/create',
+            async: true,
+            data: {
+                name2: $('#name1').val(),
+                mval: 5,
+               },
+            success: function (response)
+                {
+                  var itt = JSON.parse(response['content']);
+                  console.log(itt);
+                  console.log(itt['is_taken']);
+                  console.log(itt['a']);
+                  var str1 = itt['is_taken'];
+                  var str2 = itt['a'];
+                  $('p').append(str1+ " " +str2);
+                  $('#hd').hide();
+               },
+    error: function ()
+    {
+     notify('Something went wrong');
+     }
+});
+
+}
+</script>
+
+</body>
+</html>

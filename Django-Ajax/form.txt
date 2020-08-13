@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>form</title>
+</head>
+
+<body data-ng-app="">
+<h1>STUDENT DETAILS</h1>
+<form method="post" action="/table" enctype="multipart/form-data" name="myForm">
+      {% csrf_token %}
+
+
+    {% verbatim %}
+    <div>
+      <p>FIRST NAME <input type="text" placeholder="first_name" required name="First_name" data-ng-model="First_name"></p>
+      <p>LAST NAME <input type="text" placeholder="last_name" name="Last_name" data-ng-model="Last_name"></p>
+        <p>FULL NAME IS {{ First_name | uppercase }} {{ Last_name | uppercase }}</p>
+    </div>
+
+    <div>
+        <p>EMAIL<input type="email" placeholder="email" required name="Email" data-ng-model="Email"></p>
+        <p><span data-ng-show="myForm.Email.$error.email">Not a valid e-mail address</span></p>
+    </div>
+
+      <p>IMAGE<input type="file" placeholder="image" required name="Image"></p>
+
+    <div>
+    <p>COLLEGE<input type="text" placeholder="college" required name="College" data-ng-model="College"></p>
+        <p>COLLEGE IS {{ College | uppercase }}</span></p>
+    </div>
+
+    <p>ROLL<input type="text" placeholder="roll" required name="Roll"></p>
+
+    <p>BRANCH<input type="text" placeholder="branch" required name="Branch" data-ng-model="Branch"></p>
+    <p>BRANCH IS {{ Branch | uppercase }}</p>
+
+    {% endverbatim %}
+
+    <p><button type="submit">SUBMIT</button></p>
+
+</form>
+
+
+
+</body>
+</html>

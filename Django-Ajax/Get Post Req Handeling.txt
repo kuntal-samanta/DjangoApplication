@@ -1,0 +1,91 @@
+#Using Jquery & Ajax Get Request
+# BackEnd Code
+
+
+View.py
+-------
+
+usrname = request.GET.get('username')
+usrname = request.POST.get('username')
+
+datasend = { 'is_taken': True }
+
+return JsonResponse(datasend)
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+
+index.html
+----------
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<input type="text" id="username" name="usr">
+
+
+<script>
+$(#username).change(function()
+	{
+	   var username = $(this).val();
+	   $.ajax(
+		  {
+		    type: 'GET',
+		    url: 'abc/xyz',
+		    data: {'usrnm': username, },
+		    dataType: 'json',
+		    success: function(data)
+		             {
+			       if(data.is_taken)
+			          {
+			            alert("Hi, User);
+			          }
+			     }
+		  }
+		);
+	}
+);
+</script>
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+#Using Jquery & Ajax Post Request
+
+index.html
+----------
+
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<input type="text" id="username" name="usr">
+
+
+<script>
+$(#username).change(function()
+	{
+	   var username = $(this).val();
+	   $.ajax(
+		  {
+		    type: 'POST',
+		    url: 'abc/xyz',
+		    data: {'usrnm': username, 'a': 2, csrfmiddlewaretoken: '{{csrf_token}}' },
+		    dataType: 'json',
+		    success: function(data)
+		             {
+			       if(data.is_taken)
+			          {
+			            alert("Hi, User);
+				    consol.log(data.is_taken);
+			          }
+			     }
+		  }
+		);
+	}
+);
+</script>
