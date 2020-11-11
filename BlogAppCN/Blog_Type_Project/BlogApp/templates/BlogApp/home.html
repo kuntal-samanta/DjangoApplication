@@ -1,0 +1,260 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<title>Blog</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+    .fa {
+    font-size: 25px;
+    cursor: pointer;
+    user-select: none;
+    }
+    .mytext {
+    font-size: 16px;
+    }
+
+</style>
+
+<body class="w3-light-grey">
+<div class="w3-content" style="max-width:1400px">
+
+<div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="{% url 'home' %}" class="w3-bar-item w3-button">Kuntal Blog</a>
+        <div class="w3-right">
+          {% if loggedin %}
+          <a href="{% url 'createblog' %}" class="w3-bar-item w3-button">Create Blog</a>
+          <a href="{% url 'logout' %}" class="w3-bar-item w3-button">Logout</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="w3-bar-item w3-button">Login</a>
+          <a href="{% url 'singup' %}" class="w3-bar-item w3-button">Register</a>
+          {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<div class="w3-content w3-padding" style="max-width:1564px">
+    <!-- Project Section -->
+    <div class="w3-container w3-padding-1" id="projects">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16"></h3>
+    </div>
+
+<div class="w3-row">
+<div class="w3-col l8 s12">
+
+
+  {% for i in BlogObj %}
+
+  <div class="w3-card-4 w3-margin w3-white">
+    <img src="media/{{i.blogCreatorImage}}" alt="Nature" style="width:30%" height="250">
+    <img src="media/{{i.blogImage}}" alt="Nature" style="width:69%" height="250">
+    <div class="w3-container">
+      <h3><b>{{i.blogHeading}}</b></h3>
+      <h5>Post Time : <span class="w3-opacity">{{i.blogPostTime}}</span></h5>
+    </div>
+    <div class="w3-container">
+        <p>
+            {{i.blogContent}}
+        </p>
+      <div class="w3-row">
+            <p>
+                <span class="w3-padding-medium w3-right">
+
+                    {% if usrmail in i.blogLikedBy %}
+                    {% comment %} <b class="mytext">Like [ {{i.blogLikeCount}} ] </b> {% endcomment %}
+                    <button><i class="fa fa-thumbs-up" style="font-size:25px;color:blue;"></i></button>
+                    {% elif usrmail in i.blogDisLikeBy %}
+                    <button><i class="fa fa-thumbs-down" style="font-size:25px;color:blue;"></i></button>
+                    {% comment %} <button onclick="LikeMyPost()"><i id="RemoveLikeMyPost" class="fa fa-thumbs-up" style="font-size:25px;color:black;"></i></button> {% endcomment %}
+                    {% else %}
+                    <i id="LikeMyPost" class="fa fa-thumbs-up" style="display:none;font-size:25px;color:blue;"></i>
+                    <i id="DisLikeMyPost" class="fa fa-thumbs-down" style="display:none;font-size:25px;color:blue;"></i>
+                    <button onclick="LikeMyPost('{{i.blogId}}')">Like</button>
+                    <button onclick="DisLikeMyPost('{{i.blogId}}')">Dislike</button>
+                    {% endif %}
+
+                </span>
+            </p>
+      </div>
+
+      <h4><u>All Comment</u></h4>
+      <div>
+          <div id="{{forloop.counter}}">
+          {% for j in i.blogComment %}
+            <p><b>{{j}}</b></p>
+          {% endfor %}
+          </div>
+          <textarea rows="1" cols="90" class="{{forloop.counter}}">
+          Type Here ......
+          </textarea>
+          <button onclick="CreateComment('{{i.blogId}}', '{{forloop.counter}}')">Submit</button>
+      </div>
+
+    </div>
+    <br>
+  </div>
+  <hr>
+
+  {% endfor %}
+
+
+
+
+</div>
+
+<!-- Introduction menu -->
+<div class="w3-col l4">
+  <!-- Popular Posts -->
+  <div class="w3-card w3-margin">
+    <div class="w3-container w3-padding">
+      <h4>Your Previous Blog History</h4>
+    </div>
+
+    {% for i in loggedInuserPost %}
+    <ul class="w3-ul w3-hoverable w3-white">
+      <li class="w3-padding-16">
+        <img src="https://www.w3schools.com/w3images/workshop.jpg" alt="Image" class="w3-left w3-margin-right" style="width:50px">
+        <span class="w3-large">{{i.blogCreatorName}} {{i.blogPostTime}}</span><br>
+        <span>{{i.blogHeading}}</span>
+      </li>
+    </ul>
+    {% endfor %}
+
+  </div>
+  <hr> 
+</div>
+</div>
+<br>
+</div>
+<!-- END w3-content -->
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<script>
+function LikeMyPost(wholike) {
+  if(document.getElementById("LikeMyPost").style.display == 'none')
+  {
+    document.getElementById("LikeMyPost").style.display = "block";
+  }
+  else
+  {
+    document.getElementById("LikeMyPost").style.display = "none";
+  }
+  $.ajax({
+				type: "GET",
+				contentType: "application/json; charset=utf-8",
+				url: '{% url "likepost" %}',
+				async: true,
+				data: {
+					wholike: wholike
+				},
+				success: function (response) {
+					let res = response['success'];
+					if (res) 
+          {
+						alert("You Like It");
+					}
+					else 
+          {
+						alert("Oppsss");
+					}
+				},
+				error: function () {
+					notify('Something went wrong');
+				}
+			});
+}
+</script>
+
+<script>
+function DisLikeMyPost(whodislike) {
+  if(document.getElementById("DisLikeMyPost").style.display == "none")
+  {
+    document.getElementById("DisLikeMyPost").style.display = "block";
+  }
+  else
+  {
+    document.getElementById("DisLikeMyPost").style.display = "none";
+  }
+  $.ajax({
+				type: "GET",
+				contentType: "application/json; charset=utf-8",
+				url: '{% url "dislikepost" %}',
+				async: true,
+				data: {
+					whodislike: whodislike
+				},
+				success: function (response) {
+					let res = response['success'];
+					if (res) 
+          {
+						alert("You DisLike It");
+					}
+					else 
+          {
+						alert("Oppsss");
+					}
+				},
+				error: function () {
+					notify('Something went wrong');
+				}
+			});
+}
+</script>
+
+<script>
+// x = post id
+// y= loopcounter
+function CreateComment(x, y)
+{
+  var postId = x;
+  var comment = $('.'+y).val();
+  if(comment.length > 0)
+  {
+    $("<p><b>"+comment+"</b></p>").insertBefore("#"+y);
+    $('.'+y).val("");
+    $.ajax({
+          type: "GET",
+          contentType: "application/json; charset=utf-8",
+          url: '{% url "makecomment" %}',
+          async: true,
+          data: {
+            postid: postId,
+            comment: comment
+          },
+          success: function (response) {
+            let res = response['success'];
+            if (res) 
+            {
+              alert("You Comment on It");
+            }
+            else 
+            {
+              alert("Oppsss");
+            }
+          },
+          error: function () {
+            notify('Something went wrong');
+          }
+        });
+  }
+  else
+  {
+    alert("Please Write Something !!");
+  }
+  
+}
+</script>
+
+
+</body>
+</html>
