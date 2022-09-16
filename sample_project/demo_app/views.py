@@ -53,7 +53,7 @@ def sample_html_3(request):
         'key': "Kuntal-app1-3",
         'rand_num': [101, 201, 301, 401]
     }
-    rendered = render_to_string('app1/test.html', context=context)
+    rendered = render_to_string('app2/test.html', context=context)
     return HttpResponse(rendered)
     
 

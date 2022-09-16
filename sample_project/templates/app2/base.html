@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -55,6 +57,11 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container">
+      <!-- Example of static -->
+        <img src="{% static 'app/example.jpg' %}" alt="My image" width="200" height="100">
+        <img src="{% static 'app1/1.webp' %}" alt="My image" width="200" height="100">
+
+      <!-- Example of ninja template -->
         {% block my_heading_1 %}
         {% endblock %}
     </div>
@@ -66,6 +73,7 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
   <div class="w3-row">
     <div class="w3-twothird w3-container">
+      <!-- Example of ninja template -->
         {% block my_heading_2 %}
         {% endblock %}
     </div>

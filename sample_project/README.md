@@ -28,6 +28,10 @@
     ALLOWED_HOSTS = ['www.x-y-z.com']
 ```
 
+## To collect all static files used in projects [will collect on STATIC_ROOT='' path]
+```
+    python manage.py collectstatic --clear
+```
 
 
 
