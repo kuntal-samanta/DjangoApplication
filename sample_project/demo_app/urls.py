@@ -13,4 +13,6 @@ urlpatterns = [
 
     path('template4/', views.sample_html_4, name="sample_html_4"),
 
+    path('test-media/', views.test_media, name="sample_test_media"),
+    
 ]

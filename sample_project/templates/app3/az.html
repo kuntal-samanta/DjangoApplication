@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Test Media</title>
+</head>
+
+<body>
+
+    <h1>Hello Testing Media</h1>
+    <br>
+
+    <h4>{{ car_object.name }}</h4>
+    <h4>{{ car_object.price }}</h4>
+    <h4>{{ car_object.photo }} - {{ car_object.photo.url }}</h4>
+    <img src={{car_object.photo.url}} alt="car image" width="100" height="100">
+    <h4>{{ car_object.specs }} - {{ car_object.specs.url }} </h4>
+    <a href="#">{{car_object.specs.url}}</a>
+
+    <br/><hr>
+    <img src={{img_obj.photo1.url}} alt="secure photo1" width="100" height="100">
+    <br/>
+    <img src={{img_obj.photo2.url}} alt="open photo2" width="100" height="100">
+
+</body>
+</html>

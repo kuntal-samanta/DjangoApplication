@@ -8,6 +8,8 @@ from django.contrib import messages
 from django.shortcuts import render
 from django.template import loader
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
+from django.http import FileResponse
 
 # settings proparty
 from django.conf import settings
@@ -18,6 +20,7 @@ from django.core.cache import cache
 # common import
 import datetime
 import json
+import os
 
 # default image
 DEFAUT_IMAGE = settings.DEFAULT_IMAGE_PATH
@@ -30,6 +33,7 @@ def Test(request):
     return HttpResponse("Hello World from app1")
 
 
+#################################### Template ####################################
 def sample_html_1(request):
     context={
         'key': "Kuntal-app1",
@@ -59,4 +63,35 @@ def sample_html_3(request):
 
 def sample_html_4(request):
     return render(request, 'app2/test.html', context={})
+#################################### Template ####################################
+
+
+
+
+#################################### Media Files ####################################
+def test_media(request):
+    context = {
+        'car_object': models.Car.objects.get(id=1),
+        'img_obj': models.SecureFiles.objects.get(id=1)
+    }
+    return render(request, 'app3/az.html', context=context)
+
+
+@login_required
+def secure(request,file):
+    document = get_object_or_404(models.SecureFiles, name='Test1').photo1
+    response = FileResponse(document)
+    return response
+
+
+# Create a Python file object using open() and the with statement
+def sample_working_with_files():
+    from django.core.files import File
+
+    with open('/path/to/hello.world', 'w') as f:
+        myfile = File(f)
+        myfile.write('Hello World')
+        myfile.closed
+#################################### Media Files ####################################
+
 

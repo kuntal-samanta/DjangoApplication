@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'django.template.context_processors.media', # [for external media url]
             ],
         },
     },
@@ -125,15 +126,136 @@ else:
     '''
         when you use cdn for your static files
     '''
-    STATIC_URL = 'http://static.example.com/'
+    STATIC_URL = 'http://static.example.com/static/'
 
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-DEFAULT_IMAGE_PATH = 'default/Image/avater.jpeg'
+DEFAULT_IMAGE_PATH = 'default/avater.jpeg'
+
+
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+############################ All type of cache ###############################
+# cache setup with Dummy Cache [Dummy caching (for development)]
+'''
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+'''
+
+# cache setup with Redis
+'''
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+        # 'LOCATION': 'redis://username:password@127.0.0.1:6379',
+        # 'LOCATION': [
+        #     'redis://127.0.0.1:6379', # leader
+        #     'redis://127.0.0.1:6378', # read-replica 1
+        #     'redis://127.0.0.1:6377', # read-replica 2
+        # ],
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': 'redis://127.0.0.1:6379',
+        'OPTIONS': {
+            'db': '10',
+            'parser_class': 'redis.connection.PythonParser',
+            'pool_class': 'redis.BlockingConnectionPool',
+        }
+    }
+}
+'''
+
+# cache setup with PyMemcacheCache [Memcached- python based cache client]
+'''
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': [
+            '172.19.26.240:11211',
+            '172.19.26.242:11211',
+        ]
+    }
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '127.0.0.1:11211',
+        'OPTIONS': {
+            'no_delay': True,
+            'ignore_exc': True,
+            'max_pool_size': 4,
+            'use_pooling': True,
+        }
+    }
+}
+'''
+
+# cache setup with PyLibMCCache [Memcached - python based cache client]
+'''
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyLibMCCache',
+        'LOCATION': '127.0.0.1:11211',
+        'OPTIONS': {
+            'binary': True,
+            'username': 'user',
+            'password': 'pass',
+            'behaviors': {
+                'ketama': True,
+            }
+        }
+    }
+}
+'''
+
+# cache setup with Database caching
+'''
+# python manage.py createcachetable
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'my_cache_table',   #[cache table name <my_cache_table> ]
+    }
+}
+'''
+
+# cache setup with Filesystem caching
+'''
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/var/tmp/django_cache',
+        'TIMEOUT': 60,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+'''
+
+# cache setup with custom cache backend
+'''
+CACHES = {
+    'default': {
+        'BACKEND': 'path.to.backend',
+    }
+}
+'''
+#################################################################################
 

@@ -17,10 +17,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from demo_app import views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('app1/', include('demo_app.urls')),
+    
+    path('media/secure/<str:file>', views.secure, name="secure_media_files"),
 ]
 
 urlpatterns += static(settings.STATIC_URL)
