@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Test Media</title>
+</head>
+
+<body>
+
+    <h1>All Blog</h1>
+
+    {% for i in all_blog %}
+        <li><a href="{{ i.get_absolute_url }}">{{ i.title }}</a></li>
+    {% endfor %}
+
+</body>
+</html>

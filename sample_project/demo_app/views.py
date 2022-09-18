@@ -68,7 +68,7 @@ def sample_html_4(request):
 
 
 
-#################################### Media Files ####################################
+############################ Media Files & Access Control ############################
 def test_media(request):
     context = {
         'car_object': models.Car.objects.get(id=1),
@@ -77,7 +77,7 @@ def test_media(request):
     return render(request, 'app3/az.html', context=context)
 
 
-@login_required
+@login_required # only if has owner permission
 def secure(request,file):
     document = get_object_or_404(models.SecureFiles, name='Test1').photo1
     response = FileResponse(document)
@@ -92,6 +92,27 @@ def sample_working_with_files():
         myfile = File(f)
         myfile.write('Hello World')
         myfile.closed
-#################################### Media Files ####################################
+############################ Media Files & Access Control ############################
+
+
+############################ slugify instead of id ############################
+def test_slugify(request):
+    context = {
+        'all_blog': models.MyBlog.objects.all()
+    }
+    return render(request, 'app4/all_blog.html', context=context)
+
+
+def test_slugify_special_blog(request, slug):
+    print("#"*10, slug)
+    context = {
+        'one_blog': models.MyBlog.objects.get(slug=slug)
+    }
+    return render(request, 'app4/single.html', context=context)
+############################ slugify instead of id ############################
+
+
+
+
 
 
