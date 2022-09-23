@@ -2,15 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 
-
-"""
+'''
 # demo views.py {Query Example}
 
+""" All our db query will be here """
 def demo(request):
-    """  All our db query will be here """
 
-    """
-    One To One Insert
+    """ One To One Insert
     u = User(username="user@123", email="user123@mail.com", first_name="Alex")
     u.save()
     ud = UserDetails(
@@ -18,6 +16,7 @@ def demo(request):
         phone="9632584567"
     )
     ud.save()
+    
     # fetching
     u = User.objects.get(email="user123@mail.com")
     print(u.first_name)
@@ -40,6 +39,7 @@ def demo(request):
         batch=b
     )
     s.save()
+
     # Fetch
     s = Student.objects.get(email="jhon@mail.com")
     print(s.name)
@@ -55,11 +55,13 @@ def demo(request):
     c1.save()
     c2 = Course(name="course 53", year=2018)
     c2.save()
+
     p = Person(last_name="gfhjb", first_name="ghjk")
     p.save()
     p.courses.add(c)
     p.courses.add(c1)
     p.courses.add(c2)
+
     # Fetch
     p = Person.objects.get(last_name="gfhjb")
     o = p.courses.all()
@@ -69,4 +71,4 @@ def demo(request):
 
     return HttpResponse("hi")
 
-"""
+'''

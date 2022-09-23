@@ -83,6 +83,14 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+"""
+    Multiple Database in Django
+    
+https://books.agiliq.com/projects/django-orm-cookbook/en/latest/multiple_databases.html
+https://docs.djangoproject.com/en/4.1/topics/db/multi-db/
+"""
+
+
 
 
 # Password validation

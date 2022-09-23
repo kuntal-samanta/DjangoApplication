@@ -152,6 +152,8 @@ MIDDLEWARE = [
 ```
 
 
+# Django Reference
+https://books.agiliq.com/en/latest/README.html
 
 
 
@@ -160,4 +162,5 @@ MIDDLEWARE = [
 
 
 
-Django Doc: https://docs.djangoproject.com/en/4.1/intro/
+# Django Doc
+https://docs.djangoproject.com/en/4.1/topics/

@@ -93,6 +93,3 @@ class Product(models.Model):
     description = models.TextField(help_text="Type Description")
     price = models.FloatField(help_text="Price Of Product")
     is_active = models.BooleanField(default=True)
-    
-    # def get_absolute_url(self):
-    #     return reverse("model_detail", kwargs={"pk": self.pk})
