@@ -1,9 +1,24 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
+from .models import Profile, Product
  
- 
+
+
+class CustomProductAdminForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = "__all__"
+
+    def clean_title(self):
+        if self.cleaned_data["title"] == "product":
+            raise forms.ValidationError("No allowed")
+        return self.cleaned_data["title"]
+
+
+
+
+
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
  

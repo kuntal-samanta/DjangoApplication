@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.urls import reverse
 from django.db.models.signals import post_save, pre_save, pre_delete
 from django.dispatch import receiver
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 '''
@@ -333,6 +334,9 @@ class DemoModel(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     age = models.IntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    grade = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(100)])
     .....
     .....
 
@@ -403,3 +407,16 @@ pre_save.connect(validate_order, sender=Order):
 post_save.connect(notify_user, sender=Order)
 """
 
+
+"""
+    Django aggregate & annotate
+
+from django.db.models import Avg, Min, Max, Count
+
+>>> Book.objects.aggregate(Avg('price'))  # -> {'price__avg': 34.36}
+>>> Book.objects.aggregate(Max('price'))  # -> {'price__max': 100000.00}
+>>> Book.objects.aggregate(price_diff=Max('price', output_field=FloatField()) - Avg('price'))  # -> {'price_diff': 46.85}
+>>> Book.objects.aggregate(Avg('price'), Max('price'), Min('price'))
+
+>>> Store.objects.annotate(min_price=Min('books__price'), max_price=Max('books__price'))
+"""
